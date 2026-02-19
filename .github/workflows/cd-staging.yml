@@ -1,0 +1,22 @@
+name: CD - Deploy Staging
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - run: dotnet publish src/LawConnect.API -c Release -o ./publish
+
+      - name: Deploy to Railway (staging)
+        run: echo "TODO - Configure Railway deployment"
+        # Will use: railway up --service lawconnect-staging

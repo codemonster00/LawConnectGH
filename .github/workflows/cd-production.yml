@@ -1,0 +1,23 @@
+name: CD - Deploy Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - run: dotnet publish src/LawConnect.API -c Release -o ./publish
+
+      - name: Deploy to Production
+        run: echo "TODO - Configure production deployment"
