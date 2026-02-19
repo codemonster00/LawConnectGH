@@ -37,7 +37,6 @@ function LawyersContent() {
       setTotalCount(res.totalCount);
       setPage(p);
     } catch {
-      // API not available — show empty
       setLawyers([]);
     } finally {
       setLoading(false);
@@ -55,52 +54,27 @@ function LawyersContent() {
   };
 
   const totalPages = Math.ceil(totalCount / 12);
+  const inputClass = "bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-[#d4a843] transition placeholder-gray-500";
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Find a Lawyer</h1>
+    <div className="max-w-7xl mx-auto px-4 py-8 text-white">
+      <h1 className="text-3xl font-bold mb-2">Find a <span className="gradient-text">Lawyer</span></h1>
+      <p className="text-gray-400 mb-6">Browse verified lawyers across Ghana</p>
 
       {/* Filters */}
-      <form onSubmit={handleSearch} className="bg-white border border-gray-200 rounded-xl p-4 mb-6">
+      <form onSubmit={handleSearch} className="glass-strong rounded-2xl p-5 mb-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
-          <input
-            type="text"
-            placeholder="Search by name..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="border border-gray-300 rounded-xl px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
-          />
-          <select
-            value={topic}
-            onChange={(e) => setTopic(e.target.value)}
-            className="border border-gray-300 rounded-xl px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
-          >
+          <input type="text" placeholder="Search by name..." value={query} onChange={(e) => setQuery(e.target.value)} className={inputClass} />
+          <select value={topic} onChange={(e) => setTopic(e.target.value)} className={inputClass}>
             <option value="">All Topics</option>
-            {LEGAL_TOPICS.map((t) => (
-              <option key={t.id} value={t.id}>{t.icon} {t.name}</option>
-            ))}
+            {LEGAL_TOPICS.map((t) => (<option key={t.id} value={t.id}>{t.icon} {t.name}</option>))}
           </select>
-          <select
-            value={region}
-            onChange={(e) => setRegion(e.target.value)}
-            className="border border-gray-300 rounded-xl px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
-          >
+          <select value={region} onChange={(e) => setRegion(e.target.value)} className={inputClass}>
             <option value="">All Regions</option>
-            {GHANA_REGIONS.map((r) => (
-              <option key={r} value={r}>{r}</option>
-            ))}
+            {GHANA_REGIONS.map((r) => (<option key={r} value={r}>{r}</option>))}
           </select>
-          <input
-            type="number"
-            placeholder="Max fee (GHS)"
-            value={maxFee}
-            onChange={(e) => setMaxFee(e.target.value)}
-            className="border border-gray-300 rounded-xl px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
-          />
-          <button
-            type="submit"
-            className="bg-primary text-white rounded-full py-2 px-6 font-semibold hover:bg-primary-light transition text-sm"
-          >
+          <input type="number" placeholder="Max fee (GHS)" value={maxFee} onChange={(e) => setMaxFee(e.target.value)} className={inputClass} />
+          <button type="submit" className="btn-shimmer bg-gradient-to-r from-[#d4a843] to-[#e0be6a] text-[#0a1628] rounded-full py-2 px-6 font-semibold transition text-sm">
             Search
           </button>
         </div>
@@ -115,7 +89,9 @@ function LawyersContent() {
           <p className="text-sm text-gray-500 mb-4">{totalCount} lawyer{totalCount !== 1 ? "s" : ""} found</p>
           <div className="grid gap-4 md:grid-cols-2">
             {lawyers.map((l) => (
-              <LawyerCard key={l.id} lawyer={l} />
+              <div key={l.id} className="tilt-card">
+                <LawyerCard lawyer={l} />
+              </div>
             ))}
           </div>
           {totalPages > 1 && (
@@ -124,8 +100,8 @@ function LawyersContent() {
                 <button
                   key={i}
                   onClick={() => fetchLawyers(i + 1)}
-                  className={`w-10 h-10 rounded-full text-sm font-semibold ${
-                    page === i + 1 ? "bg-primary text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  className={`w-10 h-10 rounded-full text-sm font-semibold transition ${
+                    page === i + 1 ? "bg-gradient-to-r from-[#d4a843] to-[#e0be6a] text-[#0a1628]" : "glass text-gray-400 hover:text-white"
                   }`}
                 >
                   {i + 1}

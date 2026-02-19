@@ -30,27 +30,33 @@ function DashboardContent() {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-1">
-        Welcome back, {user?.fullName || "there"} 👋
-      </h1>
-      <p className="text-gray-500 mb-8">What would you like to do today?</p>
+    <div className="max-w-7xl mx-auto px-4 py-8 text-white">
+      {/* Welcome card */}
+      <div className="glass-strong rounded-2xl p-8 mb-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1e3a5f]/50 to-[#d4a843]/10" />
+        <div className="relative z-10">
+          <h1 className="text-2xl font-bold mb-1">
+            Welcome back, <span className="gradient-text">{user?.fullName || "there"}</span> 👋
+          </h1>
+          <p className="text-gray-400">What would you like to do today?</p>
+        </div>
+      </div>
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
         {[
-          { href: "/consultations/new", icon: "💬", title: "Ask a Lawyer", desc: "Start a new consultation", color: "border-primary" },
-          { href: "/documents", icon: "📄", title: "Generate Document", desc: "Create legal documents", color: "border-accent" },
-          { href: "/rights", icon: "📚", title: "Know Your Rights", desc: "Read legal articles", color: "border-success" },
+          { href: "/consultations/new", icon: "💬", title: "Ask a Lawyer", desc: "Start a new consultation", glow: "hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]", border: "hover:border-blue-500/30" },
+          { href: "/documents", icon: "📄", title: "Generate Document", desc: "Create legal documents", glow: "hover:shadow-[0_0_30px_rgba(212,168,67,0.15)]", border: "hover:border-[#d4a843]/30" },
+          { href: "/rights", icon: "📚", title: "Know Your Rights", desc: "Read legal articles", glow: "hover:shadow-[0_0_30px_rgba(22,163,74,0.15)]", border: "hover:border-green-500/30" },
         ].map((action) => (
           <Link
             key={action.href}
             href={action.href}
-            className={`bg-white border-2 ${action.color} rounded-xl p-6 hover:shadow-lg transition`}
+            className={`glass rounded-2xl p-6 tilt-card ${action.glow} ${action.border} transition-all`}
           >
-            <div className="text-3xl mb-2">{action.icon}</div>
-            <h3 className="font-bold text-gray-900">{action.title}</h3>
-            <p className="text-sm text-gray-500">{action.desc}</p>
+            <div className="text-3xl mb-3 animate-float">{action.icon}</div>
+            <h3 className="font-bold text-white">{action.title}</h3>
+            <p className="text-sm text-gray-400">{action.desc}</p>
           </Link>
         ))}
       </div>
@@ -59,7 +65,7 @@ function DashboardContent() {
       <section className="mb-10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold">Your Consultations</h2>
-          <Link href="/consultations/new" className="text-sm text-primary font-semibold hover:underline">+ New</Link>
+          <Link href="/consultations/new" className="text-sm text-[#d4a843] font-semibold hover:underline">+ New</Link>
         </div>
         {consultations.length === 0 ? (
           <EmptyState icon="💬" title="No consultations yet" message="Start your first consultation with a lawyer" />
@@ -76,19 +82,19 @@ function DashboardContent() {
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold">Recent Documents</h2>
-          <Link href="/documents" className="text-sm text-primary font-semibold hover:underline">View All</Link>
+          <Link href="/documents" className="text-sm text-[#d4a843] font-semibold hover:underline">View All</Link>
         </div>
         {documents.length === 0 ? (
           <EmptyState icon="📄" title="No documents yet" message="Generate your first legal document" />
         ) : (
           <div className="grid gap-3">
             {documents.slice(0, 5).map((d) => (
-              <div key={d.id} className="bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between">
+              <div key={d.id} className="glass rounded-xl p-4 flex items-center justify-between">
                 <div>
-                  <h3 className="font-semibold text-sm">{d.title}</h3>
+                  <h3 className="font-semibold text-sm text-white">{d.title}</h3>
                   <p className="text-xs text-gray-500">{d.templateName} · {new Date(d.createdAt).toLocaleDateString()}</p>
                 </div>
-                <span className="text-xs bg-gray-100 px-2 py-1 rounded-full">{d.status}</span>
+                <span className="text-xs bg-white/10 px-2 py-1 rounded-full text-gray-300">{d.status}</span>
               </div>
             ))}
           </div>
