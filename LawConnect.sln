@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A1176B75-8C4B-4B66-8422-53DF3261AA37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawConnect.Domain", "src\LawConnect.Domain\LawConnect.Domain.csproj", "{A76CF942-FD42-4AC9-875C-0AD44C9EE95C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawConnect.Application", "src\LawConnect.Application\LawConnect.Application.csproj", "{1FB00B7D-2D0F-4673-9FE9-4A9A383D7AAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawConnect.Infrastructure", "src\LawConnect.Infrastructure\LawConnect.Infrastructure.csproj", "{B0F9F6C2-30DB-410C-82F0-C1CECA221F2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawConnect.API", "src\LawConnect.API\LawConnect.API.csproj", "{8A23827B-A04C-4548-A9BB-4911BAFF71CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0B47504A-A577-4878-983A-CE805B50D08A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawConnect.UnitTests", "tests\LawConnect.UnitTests\LawConnect.UnitTests.csproj", "{C6D7BDB0-A5A2-4C8D-A01C-B9FD216BB1A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LawConnect.IntegrationTests", "tests\LawConnect.IntegrationTests\LawConnect.IntegrationTests.csproj", "{18B8EBAE-798B-4143-94FD-4D4AF6D391BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A76CF942-FD42-4AC9-875C-0AD44C9EE95C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A76CF942-FD42-4AC9-875C-0AD44C9EE95C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A76CF942-FD42-4AC9-875C-0AD44C9EE95C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A76CF942-FD42-4AC9-875C-0AD44C9EE95C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FB00B7D-2D0F-4673-9FE9-4A9A383D7AAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FB00B7D-2D0F-4673-9FE9-4A9A383D7AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FB00B7D-2D0F-4673-9FE9-4A9A383D7AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FB00B7D-2D0F-4673-9FE9-4A9A383D7AAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0F9F6C2-30DB-410C-82F0-C1CECA221F2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0F9F6C2-30DB-410C-82F0-C1CECA221F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0F9F6C2-30DB-410C-82F0-C1CECA221F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0F9F6C2-30DB-410C-82F0-C1CECA221F2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A23827B-A04C-4548-A9BB-4911BAFF71CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A23827B-A04C-4548-A9BB-4911BAFF71CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A23827B-A04C-4548-A9BB-4911BAFF71CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A23827B-A04C-4548-A9BB-4911BAFF71CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6D7BDB0-A5A2-4C8D-A01C-B9FD216BB1A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6D7BDB0-A5A2-4C8D-A01C-B9FD216BB1A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6D7BDB0-A5A2-4C8D-A01C-B9FD216BB1A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6D7BDB0-A5A2-4C8D-A01C-B9FD216BB1A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18B8EBAE-798B-4143-94FD-4D4AF6D391BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18B8EBAE-798B-4143-94FD-4D4AF6D391BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18B8EBAE-798B-4143-94FD-4D4AF6D391BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18B8EBAE-798B-4143-94FD-4D4AF6D391BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A76CF942-FD42-4AC9-875C-0AD44C9EE95C} = {A1176B75-8C4B-4B66-8422-53DF3261AA37}
+		{1FB00B7D-2D0F-4673-9FE9-4A9A383D7AAB} = {A1176B75-8C4B-4B66-8422-53DF3261AA37}
+		{B0F9F6C2-30DB-410C-82F0-C1CECA221F2A} = {A1176B75-8C4B-4B66-8422-53DF3261AA37}
+		{8A23827B-A04C-4548-A9BB-4911BAFF71CD} = {A1176B75-8C4B-4B66-8422-53DF3261AA37}
+		{C6D7BDB0-A5A2-4C8D-A01C-B9FD216BB1A2} = {0B47504A-A577-4878-983A-CE805B50D08A}
+		{18B8EBAE-798B-4143-94FD-4D4AF6D391BC} = {0B47504A-A577-4878-983A-CE805B50D08A}
+	EndGlobalSection
+EndGlobal
