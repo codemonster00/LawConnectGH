@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\LawConnect.Application\LawConnect.Application.csproj" />
     <ProjectReference Include="..\..\src\LawConnect.Domain\LawConnect.Domain.csproj" />
+    <ProjectReference Include="..\..\src\LawConnect.Infrastructure\LawConnect.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,11 @@
 using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using LawConnect.API.Hubs;
 using LawConnect.Application.Interfaces;
 using LawConnect.Application.Validators;
 using LawConnect.Infrastructure.Persistence;
+using LawConnect.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,8 +25,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
+// Register application services
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IOtpService, OtpService>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<ISmsService, SmsService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IAiService, AiService>();
+builder.Services.AddScoped<IFileStorageService, FileStorageService>();
+
 // JWT Authentication
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "LawConnectGH-SuperSecret-Key-Change-In-Production-2024!";
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "LawConnectGH-SuperSecret-Key-Change-In-Production-Min32Chars!!";
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -99,7 +110,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+        policy.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
 });
 
 var app = builder.Build();
@@ -116,6 +127,7 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<ChatHub>("/hubs/chat");
 
 // Auto-migrate in development
 if (app.Environment.IsDevelopment())
