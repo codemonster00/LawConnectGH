@@ -121,7 +121,6 @@ class AppTheme {
       backgroundColor: AppColors.surfaceVariant,
       selectedColor: AppColors.primary,
       labelStyle: _textTheme.bodySmall?.copyWith(color: AppColors.textPrimary),
-      selectedLabelStyle: _textTheme.bodySmall?.copyWith(color: AppColors.textInverse),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),

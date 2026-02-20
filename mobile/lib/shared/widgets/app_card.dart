@@ -150,7 +150,7 @@ class AppCard extends StatelessWidget {
         elevation: elevation!,
         borderRadius: effectiveBorderRadius,
         color: effectiveBackgroundColor,
-        shadowColor: AppColors.shadow,
+        shadowColor: Colors.black.withValues(alpha: 0.1),
         child: ClipRRect(
           borderRadius: effectiveBorderRadius,
           clipBehavior: clipBehavior,
@@ -184,7 +184,7 @@ class AppCard extends StatelessWidget {
 
     return [
       BoxShadow(
-        color: AppColors.shadow.withOpacity(0.1),
+        color: Colors.black.withValues(alpha: 0.1),
         blurRadius: 8,
         offset: const Offset(0, 2),
       ),

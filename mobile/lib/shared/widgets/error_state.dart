@@ -279,9 +279,9 @@ class ErrorState extends StatelessWidget {
       return 'Connection Error';
     } else if (exception is ServerException) {
       return 'Server Error';
-    } else if (exception is UnauthorizedException) {
+    } else if (exception is AuthenticationException) {
       return 'Authentication Required';
-    } else if (exception is ForbiddenException) {
+    } else if (exception is AuthorizationException) {
       return 'Access Denied';
     } else if (exception is NotFoundException) {
       return 'Not Found';
@@ -306,9 +306,9 @@ class ErrorState extends StatelessWidget {
       return Icons.wifi_off;
     } else if (exception is ServerException) {
       return Icons.cloud_off_outlined;
-    } else if (exception is UnauthorizedException) {
+    } else if (exception is AuthenticationException) {
       return Icons.lock_outline;
-    } else if (exception is ForbiddenException) {
+    } else if (exception is AuthorizationException) {
       return Icons.block;
     } else if (exception is NotFoundException) {
       return Icons.search_off;

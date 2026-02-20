@@ -38,10 +38,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: SmartRefresher(
         controller: _refreshController,
         onRefresh: _onRefresh,
-        header: const WaterDropMaterialHeader(
-          backgroundColor: AppColors.primary,
-          color: AppColors.textInverse,
-        ),
+        header: Container(), // Placeholder header (not used by current implementation)
         child: CustomScrollView(
           slivers: [
             // App Bar

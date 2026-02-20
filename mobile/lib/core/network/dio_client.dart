@@ -99,11 +99,17 @@ class _JwtInterceptor extends Interceptor {
         
         // Refresh failed, clear tokens and redirect to login
         await _storage.deleteAll();
-        handler.reject(SessionExpiredException());
+        handler.reject(DioException(
+          requestOptions: err.requestOptions,
+          error: SessionExpiredException(),
+        ));
       } catch (refreshError) {
         // Refresh failed, clear tokens
         await _storage.deleteAll();
-        handler.reject(SessionExpiredException());
+        handler.reject(DioException(
+          requestOptions: err.requestOptions,
+          error: SessionExpiredException(),
+        ));
       }
     } else {
       handler.next(err);
@@ -119,9 +125,10 @@ class _ErrorInterceptor extends Interceptor {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
-        handler.reject(
-          NetworkException('Connection timeout. Please check your internet connection.'),
-        );
+        handler.reject(DioException(
+          requestOptions: err.requestOptions,
+          error: NetworkException('Connection timeout. Please check your internet connection.'),
+        ));
         break;
         
       case DioExceptionType.badResponse:
@@ -130,42 +137,75 @@ class _ErrorInterceptor extends Interceptor {
         
         switch (statusCode) {
           case 400:
-            handler.reject(ValidationException(message));
+            handler.reject(DioException(
+              requestOptions: err.requestOptions,
+              error: ValidationException(message),
+            ));
             break;
           case 401:
-            handler.reject(AuthenticationException(message));
+            handler.reject(DioException(
+              requestOptions: err.requestOptions,
+              error: AuthenticationException(message),
+            ));
             break;
           case 403:
-            handler.reject(AuthorizationException(message));
+            handler.reject(DioException(
+              requestOptions: err.requestOptions,
+              error: AuthorizationException(message),
+            ));
             break;
           case 404:
-            handler.reject(NotFoundException(message));
+            handler.reject(DioException(
+              requestOptions: err.requestOptions,
+              error: NotFoundException(message),
+            ));
             break;
           case 409:
-            handler.reject(ConflictException(message));
+            handler.reject(DioException(
+              requestOptions: err.requestOptions,
+              error: ConflictException(message),
+            ));
             break;
           case >= 500:
-            handler.reject(ServerException(message));
+            handler.reject(DioException(
+              requestOptions: err.requestOptions,
+              error: ServerException(message),
+            ));
             break;
           default:
-            handler.reject(ApiException('HTTP $statusCode: $message'));
+            handler.reject(DioException(
+              requestOptions: err.requestOptions,
+              error: ApiException('HTTP $statusCode: $message'),
+            ));
         }
         break;
         
       case DioExceptionType.cancel:
-        handler.reject(CancellationException('Request was cancelled'));
+        handler.reject(DioException(
+          requestOptions: err.requestOptions,
+          error: CancellationException('Request was cancelled'),
+        ));
         break;
         
       case DioExceptionType.unknown:
         if (err.message?.contains('SocketException') ?? false) {
-          handler.reject(NetworkException('No internet connection'));
+          handler.reject(DioException(
+            requestOptions: err.requestOptions,
+            error: NetworkException('No internet connection'),
+          ));
         } else {
-          handler.reject(UnknownException('An unknown error occurred'));
+          handler.reject(DioException(
+            requestOptions: err.requestOptions,
+            error: UnknownException('An unknown error occurred'),
+          ));
         }
         break;
         
       default:
-        handler.reject(UnknownException(err.message ?? 'Unknown error'));
+        handler.reject(DioException(
+          requestOptions: err.requestOptions,
+          error: UnknownException(err.message ?? 'Unknown error'),
+        ));
     }
   }
 }
@@ -182,7 +222,7 @@ class _RetryInterceptor extends Interceptor {
     
     if (isRetryable && retryCount < maxRetries) {
       // Wait before retrying
-      await Future.delayed(Duration(milliseconds: retryDelay.inMilliseconds * (retryCount + 1)));
+      await Future.delayed(Duration(milliseconds: (retryDelay.inMilliseconds * (retryCount + 1)).toInt()));
       
       // Increment retry count
       err.requestOptions.extra['retryCount'] = retryCount + 1;

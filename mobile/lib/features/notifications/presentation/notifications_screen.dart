@@ -147,7 +147,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         foregroundColor: AppColors.textPrimary,
         elevation: 0,
         title: Text(
-          '${AppStrings.notifications} ${unreadCount > 0 ? '($unreadCount)' : ''}',
+          '${'Notifications'} ${unreadCount > 0 ? '($unreadCount)' : ''}',
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         actions: [

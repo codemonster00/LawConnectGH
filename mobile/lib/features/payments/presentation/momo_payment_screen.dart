@@ -335,9 +335,12 @@ class _MoMoPaymentScreenState extends ConsumerState<MoMoPaymentScreen> {
             ),
             const SizedBox(height: 16),
             
-            AppTextField.phone(
+            AppTextField(
               controller: _phoneController,
+              label: 'Phone Number',
               hint: '${_selectedProvider!.prefix} XXX XXXX',
+              keyboardType: TextInputType.phone,
+              prefixIcon: const Icon(Icons.phone),
               validator: _validatePhoneNumber,
             ),
             
