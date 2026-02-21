@@ -53,19 +53,22 @@ class LawConnectApp extends ConsumerWidget {
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize Hive for local storage
-  await Hive.initFlutter();
-  
-  // Register Hive adapters for custom objects
-  // Hive.registerAdapter(UserAdapter());
-  // Hive.registerAdapter(ConsultationAdapter());
-  // Hive.registerAdapter(LawyerProfileAdapter());
+  try {
+    // Initialize Hive for local storage
+    await Hive.initFlutter();
+  } catch (e) {
+    debugPrint('Hive init failed (may be web): $e');
+  }
   
   // Set preferred orientations
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  try {
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  } catch (e) {
+    debugPrint('Orientation lock failed: $e');
+  }
   
   // Set system UI overlay style
   SystemChrome.setSystemUIOverlayStyle(

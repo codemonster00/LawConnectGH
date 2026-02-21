@@ -103,7 +103,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                                 borderRadius: BorderRadius.circular(24),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primaryDark.withOpacity(0.3),
+                                    color: AppColors.primaryDark.withValues(alpha: 0.3),
                                     blurRadius: 20,
                                     offset: const Offset(0, 10),
                                   ),
@@ -132,7 +132,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                             Text(
                               AppStrings.appTagline,
                               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: AppColors.textInverse.withOpacity(0.9),
+                                color: AppColors.textInverse.withValues(alpha: 0.9),
                                 fontWeight: FontWeight.w400,
                               ),
                               textAlign: TextAlign.center,
@@ -158,7 +158,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       height: 40,
                       child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          AppColors.textInverse.withOpacity(0.8),
+                          AppColors.textInverse.withValues(alpha: 0.8),
                         ),
                         strokeWidth: 3,
                       ),
@@ -170,7 +170,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                     child: Text(
                       'Loading...',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textInverse.withOpacity(0.7),
+                        color: AppColors.textInverse.withValues(alpha: 0.7),
                       ),
                     ),
                   ),

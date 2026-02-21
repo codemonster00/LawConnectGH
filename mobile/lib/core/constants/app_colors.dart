@@ -21,16 +21,16 @@ class AppColors {
   static const Color info = Color(0xFF3B82F6);
   
   // Neutral Colors
-  static const Color textPrimary = Color(0xFF1F2937);
-  static const Color textSecondary = Color(0xFF6B7280);
+  static const Color textPrimary = Color(0xFF111827);
+  static const Color textSecondary = Color(0xFF4B5563);
   static const Color textTertiary = Color(0xFF9CA3AF);
   static const Color textInverse = Color(0xFFFFFFFF);
   
   // Background Colors
-  static const Color background = Color(0xFFFAFAFA);
+  static const Color background = Color(0xFFFFFFFF);
   static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceVariant = Color(0xFFF3F4F6);
-  static const Color border = Color(0xFFE5E7EB);
+  static const Color surfaceVariant = Color(0xFFF9FAFB);
+  static const Color border = Color(0xFFD1D5DB);
   static const Color divider = Color(0xFFE5E7EB);
   
   // Ghana-specific colors

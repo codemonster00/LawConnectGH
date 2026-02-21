@@ -10,6 +10,7 @@ class AppTheme {
   static ThemeData get light => ThemeData(
     useMaterial3: true,
     colorScheme: lawConnectColorScheme,
+    fontFamily: 'Inter',
     
     // Typography
     textTheme: _textTheme,
@@ -44,7 +45,7 @@ class AppTheme {
     cardTheme: CardTheme(
       color: AppColors.surface,
       elevation: 2,
-      shadowColor: AppColors.primary.withOpacity(0.1),
+      shadowColor: AppColors.primary.withValues(alpha: 0.1),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -94,14 +95,14 @@ class AppTheme {
     // Input Decoration Theme
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.surfaceVariant,
+      fillColor: Colors.white,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderSide: const BorderSide(color: Color(0xFFD1D5DB), width: 1.5),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.border),
+        borderSide: const BorderSide(color: Color(0xFFD1D5DB), width: 1.5),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -109,11 +110,15 @@ class AppTheme {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.error),
+        borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.error, width: 2),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       labelStyle: _textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-      hintStyle: _textTheme.bodyMedium?.copyWith(color: AppColors.textTertiary),
+      hintStyle: _textTheme.bodyMedium?.copyWith(color: Color(0xFF9CA3AF)),
     ),
     
     // Chip Theme

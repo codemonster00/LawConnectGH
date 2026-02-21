@@ -326,7 +326,7 @@ class _AppTextFieldState extends State<AppTextField> {
             filled: true,
             fillColor: widget.enabled 
                 ? (_hasFocus ? AppColors.surface : AppColors.surfaceVariant)
-                : AppColors.surfaceVariant.withOpacity(0.5),
+                : AppColors.surfaceVariant.withValues(alpha: 0.5),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: AppColors.border),
@@ -349,7 +349,7 @@ class _AppTextFieldState extends State<AppTextField> {
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.border.withOpacity(0.5)),
+              borderSide: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
             ),
           ),
         ),

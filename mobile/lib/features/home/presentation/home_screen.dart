@@ -54,7 +54,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Text(
                     _getGreeting(),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textInverse.withOpacity(0.8),
+                      color: AppColors.textInverse.withValues(alpha: 0.8),
                     ),
                   ),
                   // TODO: Get from user provider

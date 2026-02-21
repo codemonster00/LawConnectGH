@@ -8,6 +8,7 @@ import '../../../core/constants/app_strings.dart';
 
 /// Onboarding screen with app introduction slides
 class OnboardingScreen extends ConsumerStatefulWidget {
+
   const OnboardingScreen({super.key});
 
   @override
@@ -57,7 +58,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   void _completeOnboarding() {
-    // TODO: Mark onboarding as completed in storage
+    // Mark onboarding as completed
+    ref.read(onboardingStateProvider.notifier).state = const AsyncValue.data(true);
     context.go(AppRoutes.phoneAuth);
   }
 
@@ -102,7 +104,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: page.color.withOpacity(0.1),
+                            color: page.color.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
