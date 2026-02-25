@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/constants/app_strings.dart';
+import 'package:go_router/go_router.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_typography.dart';
 
-/// Payment methods management screen
-class PaymentMethodsScreen extends ConsumerWidget {
+class PaymentMethodsScreen extends StatelessWidget {
   const PaymentMethodsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.paymentMethods),
+        title: Text('Payment Methods', style: AppTypography.pageTitle()),
+        backgroundColor: AppColors.surface,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => context.pop(),
+        ),
       ),
       body: const Center(
-        child: Text('Payment Methods Screen - Coming Soon'),
+        child: Text('Payment Methods Screen'),
       ),
     );
   }

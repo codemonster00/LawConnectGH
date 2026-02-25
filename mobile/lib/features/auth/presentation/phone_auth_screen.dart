@@ -1,366 +1,412 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:country_picker/country_picker.dart';
-import '../../../app/router.dart';
-import '../../../core/utils/validators.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_dimensions.dart';
+import '../../../core/constants/app_typography.dart';
 
-/// Phone number authentication screen - Production quality
-class PhoneAuthScreen extends ConsumerStatefulWidget {
+class PhoneAuthScreen extends StatefulWidget {
   const PhoneAuthScreen({super.key});
 
   @override
-  ConsumerState<PhoneAuthScreen> createState() => _PhoneAuthScreenState();
+  State<PhoneAuthScreen> createState() => _PhoneAuthScreenState();
 }
 
-class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
-  Country _selectedCountry = Country.parse('GH');
+class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
+  final TextEditingController _phoneController = TextEditingController();
+  final FocusNode _phoneFocusNode = FocusNode();
+  Country _selectedCountry = Country.from(json: {
+    'e164_cc': '233',
+    'iso2_cc': 'GH',
+    'e164_sc': 0,
+    'geographic': true,
+    'level': 1,
+    'name': 'Ghana',
+    'example': '232123456',
+    'display_name': 'Ghana (GH) [+233]',
+    'full_example_with_plus_sign': '+233232123456',
+    'display_name_no_e164_cc': 'Ghana (GH)',
+    'e164_key': '233-GH-0'
+  });
+  
   bool _isLoading = false;
-  String? _errorMessage;
+  String? _errorText;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: AppColors.surface,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
+  }
 
   @override
   void dispose() {
     _phoneController.dispose();
+    _phoneFocusNode.dispose();
     super.dispose();
   }
 
-  void _sendOtp() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    try {
-      final phoneNumber = '${_selectedCountry.phoneCode}${_phoneController.text.replaceAll(RegExp(r'\D'), '')}';
-      await Future.delayed(const Duration(seconds: 2));
-      
-      if (mounted) {
-        context.go(
-          '${AppRoutes.otpVerification}?phone=${Uri.encodeComponent(phoneNumber)}',
-        );
-      }
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Failed to send OTP. Please try again.';
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  void _showCountryPicker() {
+  void _selectCountry() {
     showCountryPicker(
       context: context,
       showPhoneCode: true,
       onSelect: (Country country) {
         setState(() {
           _selectedCountry = country;
+          _errorText = null;
         });
       },
-      favorite: ['GH', 'NG', 'KE', 'ZA'],
       countryListTheme: CountryListThemeData(
-        flagSize: 25,
-        backgroundColor: Colors.white,
-        textStyle: const TextStyle(fontSize: 16, color: AppColors.textPrimary),
-        bottomSheetHeight: 500,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        bottomSheetHeight: MediaQuery.of(context).size.height * 0.8,
+        backgroundColor: AppColors.surface,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(AppDimensions.bottomSheetBorderRadius),
+        ),
         inputDecoration: InputDecoration(
-          hintText: 'Search country',
-          hintStyle: const TextStyle(color: AppColors.textTertiary),
-          prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
           filled: true,
-          fillColor: AppColors.surfaceVariant,
+          fillColor: AppColors.card,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.inputPaddingHorizontal,
+            vertical: AppDimensions.inputPaddingVertical,
+          ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(AppDimensions.inputBorderRadius),
+            borderSide: const BorderSide(color: AppColors.border),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.inputBorderRadius),
+            borderSide: const BorderSide(color: AppColors.border),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.inputBorderRadius),
+            borderSide: const BorderSide(color: AppColors.accent, width: 2),
           ),
         ),
+        searchTextStyle: AppTypography.body(),
+        textStyle: AppTypography.body(),
       ),
     );
+  }
+
+  void _formatPhoneNumber(String value) {
+    // Basic phone number formatting for Ghana
+    String digitsOnly = value.replaceAll(RegExp(r'[^\d]'), '');
+    
+    if (_selectedCountry.phoneCode == '233' && digitsOnly.isNotEmpty) {
+      // Ghana phone number formatting
+      if (digitsOnly.length <= 3) {
+        _phoneController.value = TextEditingValue(
+          text: digitsOnly,
+          selection: TextSelection.collapsed(offset: digitsOnly.length),
+        );
+      } else if (digitsOnly.length <= 6) {
+        String formatted = '${digitsOnly.substring(0, 3)} ${digitsOnly.substring(3)}';
+        _phoneController.value = TextEditingValue(
+          text: formatted,
+          selection: TextSelection.collapsed(offset: formatted.length),
+        );
+      } else if (digitsOnly.length <= 9) {
+        String formatted = '${digitsOnly.substring(0, 3)} ${digitsOnly.substring(3, 6)} ${digitsOnly.substring(6)}';
+        _phoneController.value = TextEditingValue(
+          text: formatted,
+          selection: TextSelection.collapsed(offset: formatted.length),
+        );
+      } else {
+        // Limit to 9 digits for Ghana
+        String limited = digitsOnly.substring(0, 9);
+        String formatted = '${limited.substring(0, 3)} ${limited.substring(3, 6)} ${limited.substring(6)}';
+        _phoneController.value = TextEditingValue(
+          text: formatted,
+          selection: TextSelection.collapsed(offset: formatted.length),
+        );
+      }
+    } else {
+      _phoneController.value = TextEditingValue(
+        text: digitsOnly,
+        selection: TextSelection.collapsed(offset: digitsOnly.length),
+      );
+    }
+  }
+
+  bool _isValidPhoneNumber() {
+    String digitsOnly = _phoneController.text.replaceAll(RegExp(r'[^\d]'), '');
+    
+    if (_selectedCountry.phoneCode == '233') {
+      // Ghana phone numbers are typically 9 digits
+      return digitsOnly.length == 9 && 
+             (digitsOnly.startsWith('20') || 
+              digitsOnly.startsWith('23') || 
+              digitsOnly.startsWith('24') || 
+              digitsOnly.startsWith('25') || 
+              digitsOnly.startsWith('26') || 
+              digitsOnly.startsWith('27') || 
+              digitsOnly.startsWith('28') || 
+              digitsOnly.startsWith('50') || 
+              digitsOnly.startsWith('54') || 
+              digitsOnly.startsWith('55') || 
+              digitsOnly.startsWith('59'));
+    }
+    
+    return digitsOnly.length >= 7; // Basic validation for other countries
+  }
+
+  Future<void> _continue() async {
+    setState(() {
+      _errorText = null;
+    });
+
+    if (!_isValidPhoneNumber()) {
+      setState(() {
+        _errorText = 'Please enter a valid phone number';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Simulate API call
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+      
+      // Navigate to OTP screen
+      context.go('/auth/otp', extra: {
+        'phoneNumber': '+${_selectedCountry.phoneCode} ${_phoneController.text}',
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.textPrimary),
+          onPressed: () => context.pop(),
+        ),
+      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.contentPaddingHorizontalLarge,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: AppDimensions.spacing32),
               
-              // Back button
-              if (context.canPop())
-                GestureDetector(
-                  onTap: () => context.pop(),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.surfaceVariant,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(Icons.arrow_back_ios_new, size: 18, color: AppColors.textPrimary),
-                  ),
-                ),
+              // Welcome Title
+              Text(
+                'Welcome to\nLawConnect',
+                style: AppTypography.heroTitle(),
+              )
+              .animate()
+              .slideY(
+                begin: 0.3,
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeOut,
+              )
+              .fadeIn(duration: const Duration(milliseconds: 400)),
               
-              const SizedBox(height: 40),
+              const SizedBox(height: AppDimensions.spacing16),
               
-              // Header icon
+              // Subtitle
+              Text(
+                'Enter your phone number to get started',
+                style: AppTypography.body(color: AppColors.textSecondary),
+              )
+              .animate()
+              .slideY(
+                begin: 0.2,
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeOut,
+                delay: const Duration(milliseconds: 100),
+              )
+              .fadeIn(duration: const Duration(milliseconds: 400)),
+              
+              const SizedBox(height: AppDimensions.spacing48),
+              
+              // Phone Number Input
               Container(
-                width: 64,
-                height: 64,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Icon(
-                  Icons.phone_android_rounded,
-                  size: 32,
-                  color: AppColors.primary,
-                ),
-              ),
-              const SizedBox(height: 24),
-              
-              // Title
-              const Text(
-                'Enter your phone\nnumber',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF111827),
-                  height: 1.2,
-                  fontFamily: 'Inter',
-                ),
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                'We\'ll send you a verification code to confirm your identity.',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xFF6B7280),
-                  height: 1.5,
-                  fontFamily: 'Inter',
-                ),
-              ),
-              
-              const SizedBox(height: 40),
-              
-              // Phone label
-              const Text(
-                'Phone Number',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF374151),
-                  fontFamily: 'Inter',
-                ),
-              ),
-              const SizedBox(height: 8),
-              
-              // Phone input row
-              Form(
-                key: _formKey,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF9FAFB),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: const Color(0xFFD1D5DB), width: 1.5),
+                  color: AppColors.card,
+                  borderRadius: BorderRadius.circular(AppDimensions.inputBorderRadius),
+                  border: Border.all(
+                    color: _errorText != null ? AppColors.error : AppColors.border,
+                    width: _errorText != null ? 2 : 1,
                   ),
-                  child: Row(
-                    children: [
-                      // Country code picker
-                      GestureDetector(
-                        onTap: _showCountryPicker,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              right: BorderSide(color: Color(0xFFD1D5DB), width: 1.5),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                _selectedCountry.flagEmoji,
-                                style: const TextStyle(fontSize: 22),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                '+${_selectedCountry.phoneCode}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF111827),
-                                  fontFamily: 'Inter',
-                                ),
-                              ),
-                              const SizedBox(width: 4),
-                              const Icon(Icons.keyboard_arrow_down, size: 20, color: Color(0xFF6B7280)),
-                            ],
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.shadow,
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    // Country Code Picker
+                    GestureDetector(
+                      onTap: _selectCountry,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppDimensions.spacing16,
+                          vertical: AppDimensions.inputPaddingVertical,
+                        ),
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            right: BorderSide(color: AppColors.border),
                           ),
                         ),
-                      ),
-                      
-                      // Phone input
-                      Expanded(
-                        child: TextFormField(
-                          controller: _phoneController,
-                          keyboardType: TextInputType.phone,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF111827),
-                            fontFamily: 'Inter',
-                            letterSpacing: 0.5,
-                          ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(10),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              _selectedCountry.flagEmoji,
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            const SizedBox(width: AppDimensions.spacing8),
+                            Text(
+                              '+${_selectedCountry.phoneCode}',
+                              style: AppTypography.body(),
+                            ),
+                            const SizedBox(width: AppDimensions.spacing4),
+                            const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: AppColors.textSecondary,
+                              size: AppDimensions.iconMedium,
+                            ),
                           ],
-                          validator: Validators.validatePhoneNumber,
-                          decoration: InputDecoration(
-                            hintText: '20 123 4567',
-                            hintStyle: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF9CA3AF),
-                              fontFamily: 'Inter',
-                            ),
-                            border: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                            filled: false,
-                          ),
-                          onChanged: (value) {
-                            if (_errorMessage != null) {
-                              setState(() => _errorMessage = null);
-                            }
-                          },
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    
+                    // Phone Number Input
+                    Expanded(
+                      child: TextField(
+                        controller: _phoneController,
+                        focusNode: _phoneFocusNode,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          hintText: _selectedCountry.phoneCode == '233' 
+                            ? '242 123 456' 
+                            : 'Phone number',
+                          hintStyle: AppTypography.body(color: AppColors.textTertiary),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: AppDimensions.spacing16,
+                            vertical: AppDimensions.inputPaddingVertical,
+                          ),
+                        ),
+                        style: AppTypography.body(),
+                        onChanged: _formatPhoneNumber,
+                        onSubmitted: (_) => _continue(),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+              )
+              .animate()
+              .slideY(
+                begin: 0.2,
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeOut,
+                delay: const Duration(milliseconds: 200),
+              )
+              .fadeIn(duration: const Duration(milliseconds: 400)),
               
-              // Error message
-              if (_errorMessage != null) ...[
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFEF2F2),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFFFCA5A5)),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.error_outline, color: Color(0xFFDC2626), size: 20),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          _errorMessage!,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFFDC2626),
-                            fontFamily: 'Inter',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              // Error Text
+              if (_errorText != null) ...[
+                const SizedBox(height: AppDimensions.spacing8),
+                Text(
+                  _errorText!,
+                  style: AppTypography.caption(color: AppColors.error),
+                )
+                .animate()
+                .fadeIn(duration: const Duration(milliseconds: 300))
+                .slideY(begin: -0.2, duration: const Duration(milliseconds: 300)),
               ],
               
-              const Spacer(),
+              const SizedBox(height: AppDimensions.spacing32),
               
-              // Continue button
+              // Continue Button
               SizedBox(
                 width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _sendOtp,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.5),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
+                child: FilledButton(
+                  onPressed: _isLoading ? null : _continue,
                   child: _isLoading
-                      ? const SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2.5,
-                          ),
-                        )
-                      : const Text(
-                          'Continue',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'Inter',
+                    ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            AppColors.textInverse.withOpacity(0.7),
                           ),
                         ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              
-              // Terms
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text.rich(
-                    TextSpan(
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF9CA3AF),
-                        height: 1.5,
-                        fontFamily: 'Inter',
+                      )
+                    : Text(
+                        'Continue',
+                        style: AppTypography.button(),
                       ),
-                      children: [
-                        TextSpan(text: 'By continuing, you agree to our '),
-                        TextSpan(
-                          text: 'Terms of Service',
-                          style: TextStyle(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        TextSpan(text: ' and '),
-                        TextSpan(
-                          text: 'Privacy Policy',
-                          style: TextStyle(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
+                ),
+              )
+              .animate()
+              .slideY(
+                begin: 0.2,
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeOut,
+                delay: const Duration(milliseconds: 300),
+              )
+              .fadeIn(duration: const Duration(milliseconds: 400)),
+              
+              const SizedBox(height: AppDimensions.spacing40),
+              
+              // Terms and Privacy
+              Center(
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: AppTypography.caption(color: AppColors.textTertiary),
+                    children: [
+                      const TextSpan(text: 'By continuing, you agree to our '),
+                      TextSpan(
+                        text: 'Terms of Service',
+                        style: AppTypography.caption(color: AppColors.accent),
+                      ),
+                      const TextSpan(text: ' and '),
+                      TextSpan(
+                        text: 'Privacy Policy',
+                        style: AppTypography.caption(color: AppColors.accent),
+                      ),
+                      const TextSpan(text: '.'),
+                    ],
                   ),
                 ),
+              )
+              .animate()
+              .fadeIn(
+                duration: const Duration(milliseconds: 400),
+                delay: const Duration(milliseconds: 400),
               ),
-              const SizedBox(height: 24),
+              
+              const SizedBox(height: AppDimensions.spacing32),
             ],
           ),
         ),

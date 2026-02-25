@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:animations/animations.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_strings.dart';
-import '../../app/router.dart';
+import '../../core/constants/app_dimensions.dart';
+import '../../core/constants/app_typography.dart';
 
-/// Main navigation shell with bottom navigation bar and FAB
-class MainNavigationShell extends StatelessWidget {
+class MainNavigationShell extends StatefulWidget {
   final Widget child;
   
   const MainNavigationShell({
@@ -14,143 +15,154 @@ class MainNavigationShell extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final currentLocation = GoRouterState.of(context).uri.toString();
-    final showFAB = _shouldShowFAB(currentLocation);
-    
-    return Scaffold(
-      body: child,
-      bottomNavigationBar: _BottomNavigationBar(),
-      floatingActionButton: showFAB ? _buildFloatingActionButton(context) : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-  }
-  
-  bool _shouldShowFAB(String location) {
-    // Show FAB on main tabs, hide on detail screens
-    return location == AppRoutes.home || 
-           location == AppRoutes.lawyers ||
-           location == AppRoutes.consultations;
-  }
-  
-  Widget _buildFloatingActionButton(BuildContext context) {
-    final theme = Theme.of(context);
-    
-    return FloatingActionButton.large(
-      onPressed: () => context.go(AppRoutes.voiceRecording),
-      tooltip: 'Voice Recording',
-      elevation: 8,
-      child: Icon(
-        Icons.mic_rounded,
-        size: 32,
-        color: theme.colorScheme.onPrimaryContainer,
-      ),
-    );
-  }
+  State<MainNavigationShell> createState() => _MainNavigationShellState();
 }
 
-/// Material Design 3 NavigationBar with 5 tabs
-class _BottomNavigationBar extends StatelessWidget {
+class _MainNavigationShellState extends State<MainNavigationShell>
+    with TickerProviderStateMixin {
+  int _currentIndex = 0;
+  
+  final List<NavigationDestination> _destinations = [
+    const NavigationDestination(
+      icon: Icon(Icons.home_outlined),
+      selectedIcon: Icon(Icons.home),
+      label: 'Home',
+    ),
+    const NavigationDestination(
+      icon: Icon(Icons.people_outlined),
+      selectedIcon: Icon(Icons.people),
+      label: 'Lawyers',
+    ),
+    const NavigationDestination(
+      icon: Icon(Icons.chat_outlined),
+      selectedIcon: Icon(Icons.chat),
+      label: 'Consultations',
+    ),
+    const NavigationDestination(
+      icon: Icon(Icons.folder_outlined),
+      selectedIcon: Icon(Icons.folder),
+      label: 'Documents',
+    ),
+    const NavigationDestination(
+      icon: Icon(Icons.person_outlined),
+      selectedIcon: Icon(Icons.person),
+      label: 'Profile',
+    ),
+  ];
+
+  final List<String> _routes = [
+    '/home',
+    '/lawyers',
+    '/consultations',
+    '/documents',
+    '/profile',
+  ];
+
   @override
-  Widget build(BuildContext context) {
-    final currentLocation = GoRouterState.of(context).uri.toString();
-    final theme = Theme.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _updateCurrentIndex();
+  }
+
+  void _updateCurrentIndex() {
+    final location = GoRouterState.of(context).uri.toString();
     
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: 0.1),
-            offset: const Offset(0, -2),
-            blurRadius: 8,
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: NavigationBar(
-        selectedIndex: _getCurrentIndex(currentLocation),
-        onDestinationSelected: (index) => _onTabTapped(context, index),
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        animationDuration: const Duration(milliseconds: 300),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
-            label: AppStrings.home,
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.people_outline_rounded),
-            selectedIcon: Icon(Icons.people_rounded),
-            label: AppStrings.lawyers,
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.chat_bubble_outline_rounded),
-            selectedIcon: Icon(Icons.chat_bubble_rounded),
-            label: AppStrings.consultations,
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.description_outlined),
-            selectedIcon: Icon(Icons.description_rounded),
-            label: AppStrings.documents,
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline_rounded),
-            selectedIcon: Icon(Icons.person_rounded),
-            label: AppStrings.profile,
-          ),
-        ],
-      ),
-    );
-  }
-
-  int _getCurrentIndex(String location) {
-    if (location.startsWith(AppRoutes.home)) return 0;
-    if (location.startsWith(AppRoutes.lawyers)) return 1;
-    if (location.startsWith(AppRoutes.consultations)) return 2;
-    if (location.startsWith(AppRoutes.documents)) return 3;
-    if (location.startsWith(AppRoutes.profile)) return 4;
-    return 0; // Default to home
-  }
-
-  void _onTabTapped(BuildContext context, int index) {
-    switch (index) {
-      case 0:
-        context.go(AppRoutes.home);
+    for (int i = 0; i < _routes.length; i++) {
+      if (location.startsWith(_routes[i])) {
+        if (_currentIndex != i) {
+          setState(() {
+            _currentIndex = i;
+          });
+        }
         break;
-      case 1:
-        context.go(AppRoutes.lawyers);
-        break;
-      case 2:
-        context.go(AppRoutes.consultations);
-        break;
-      case 3:
-        context.go(AppRoutes.documents);
-        break;
-      case 4:
-        context.go(AppRoutes.profile);
-        break;
+      }
     }
   }
-}
 
-/// Custom floating action button for quick actions
-class MainFAB extends StatelessWidget {
-  const MainFAB({super.key});
+  void _onDestinationSelected(int index) {
+    if (_currentIndex != index) {
+      // Add haptic feedback
+      HapticFeedback.lightImpact();
+      
+      setState(() {
+        _currentIndex = index;
+      });
+      
+      // Navigate to the selected route
+      context.go(_routes[index]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
-      onPressed: () {
-        // Quick action: Find a lawyer instantly
-        context.go(AppRoutes.lawyers);
-      },
-      backgroundColor: AppColors.accent,
-      foregroundColor: AppColors.textPrimary,
-      elevation: 8,
-      icon: const Icon(Icons.flash_on),
-      label: const Text(
-        'Quick Help',
-        style: TextStyle(fontWeight: FontWeight.w600),
+    return Scaffold(
+      body: PageTransitionSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+          return FadeThroughTransition(
+            animation: primaryAnimation,
+            secondaryAnimation: secondaryAnimation,
+            child: child,
+          );
+        },
+        child: widget.child,
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.navShadow,
+              blurRadius: 8,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: NavigationBar(
+          selectedIndex: _currentIndex,
+          onDestinationSelected: _onDestinationSelected,
+          backgroundColor: AppColors.navBackground,
+          surfaceTintColor: Colors.transparent,
+          indicatorColor: AppColors.accent.withOpacity(0.12),
+          elevation: 0,
+          height: AppDimensions.navBarHeight,
+          destinations: _destinations.asMap().entries.map((entry) {
+            final index = entry.key;
+            final destination = entry.value;
+            final isSelected = index == _currentIndex;
+            
+            return NavigationDestination(
+              icon: _buildNavIcon(
+                destination.icon as Icon,
+                isSelected: false,
+              ),
+              selectedIcon: _buildNavIcon(
+                destination.selectedIcon as Icon,
+                isSelected: true,
+              ),
+              label: destination.label,
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavIcon(Icon icon, {required bool isSelected}) {
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        color: isSelected 
+          ? AppColors.accent.withOpacity(0.2)
+          : Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Icon(
+        icon.icon,
+        color: isSelected 
+          ? AppColors.accent
+          : AppColors.textTertiary,
+        size: AppDimensions.navBarIconSize,
       ),
     );
   }

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:dynamic_color/dynamic_color.dart';
-import '../core/constants/app_strings.dart';
-import '../features/settings/providers/theme_provider.dart';
+import '../core/constants/app_colors.dart';
 import 'router.dart';
 import 'theme.dart';
 
@@ -15,50 +13,35 @@ class LawConnectApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
-    final themeMode = ref.watch(themeModeProvider);
-    final useDynamicColor = ref.watch(useDynamicColorProvider);
     
-    return DynamicColorBuilder(
-      builder: (lightDynamic, darkDynamic) {
-        return MaterialApp.router(
-          // App Info
-          title: AppStrings.appName,
-          debugShowCheckedModeBanner: false,
-          
-          // Routing
-          routerConfig: router,
-          
-          // Theme with dynamic color support
-          theme: AppTheme.light(
-            useDynamicColor ? lightDynamic : null,
+    return MaterialApp.router(
+      // App Info
+      title: 'LawConnect GH',
+      debugShowCheckedModeBanner: false,
+      
+      // Routing
+      routerConfig: router,
+      
+      // Theme
+      theme: AppTheme.lightTheme(),
+      darkTheme: AppTheme.darkTheme(),
+      themeMode: ThemeMode.light, // Default to light theme
+      
+      // Localization
+      supportedLocales: const [
+        Locale('en', 'GH'), // English (Ghana)
+      ],
+      
+      // Platform-specific configurations
+      builder: (context, child) {
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: const SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark,
+            systemNavigationBarColor: AppColors.navBackground,
+            systemNavigationBarIconBrightness: Brightness.dark,
           ),
-          darkTheme: AppTheme.dark(
-            useDynamicColor ? darkDynamic : null,
-          ),
-          themeMode: themeMode,
-          
-          // Localization (ready for future expansion)
-          supportedLocales: const [
-            Locale('en', 'GH'), // English (Ghana)
-            // Future: Add Twi, Ga, Hausa support
-          ],
-          
-          // Platform-specific configurations
-          builder: (context, child) {
-            return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent,
-                statusBarIconBrightness: Theme.of(context).brightness == Brightness.light 
-                  ? Brightness.dark 
-                  : Brightness.light,
-                systemNavigationBarColor: Theme.of(context).colorScheme.surface,
-                systemNavigationBarIconBrightness: Theme.of(context).brightness == Brightness.light 
-                  ? Brightness.dark 
-                  : Brightness.light,
-              ),
-              child: child!,
-            );
-          },
+          child: child!,
         );
       },
     );
@@ -91,7 +74,7 @@ Future<void> initializeApp() async {
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
+      systemNavigationBarColor: AppColors.navBackground,
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );

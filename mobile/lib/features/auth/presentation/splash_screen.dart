@@ -1,202 +1,234 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import '../../../app/router.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_strings.dart';
+import '../../../core/constants/app_dimensions.dart';
+import '../../../core/constants/app_typography.dart';
 
-/// Splash screen with app logo and loading animation
-class SplashScreen extends ConsumerStatefulWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  ConsumerState<SplashScreen> createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends ConsumerState<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
+class _SplashScreenState extends State<SplashScreen> 
+    with TickerProviderStateMixin {
+  late AnimationController _logoController;
+  late AnimationController _textController;
+  late AnimationController _backgroundController;
 
   @override
   void initState() {
     super.initState();
     
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 2000),
+    // Set status bar to transparent with light icons
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: AppColors.primary,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+    );
+    
+    _logoController = AnimationController(
+      duration: const Duration(milliseconds: 1200),
       vsync: this,
     );
     
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-      ),
+    _textController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
     );
     
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: const Interval(0.0, 0.6, curve: Curves.elasticOut),
-      ),
+    _backgroundController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
     );
-    
-    _startSplashSequence();
+
+    _startAnimation();
   }
 
-  void _startSplashSequence() async {
-    // Start animation
-    _animationController.forward();
+  void _startAnimation() async {
+    await Future.delayed(const Duration(milliseconds: 300));
     
-    // Wait for animation to complete
-    await _animationController.forward();
+    // Start background gradient animation
+    _backgroundController.forward();
     
-    // Additional delay for branding
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 400));
     
-    // Check app state and navigate
+    // Start logo animation
+    _logoController.forward();
+    
+    await Future.delayed(const Duration(milliseconds: 600));
+    
+    // Start text animation
+    _textController.forward();
+    
+    // Navigate to onboarding after animations complete
+    await Future.delayed(const Duration(milliseconds: 2500));
+    
     if (mounted) {
-      _navigateToNextScreen();
+      context.go('/onboarding');
     }
-  }
-
-  void _navigateToNextScreen() {
-    // TODO: Check actual auth and onboarding state
-    // For now, always go to onboarding
-    context.go(AppRoutes.onboarding);
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _logoController.dispose();
+    _textController.dispose();
+    _backgroundController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 3,
+      body: AnimatedBuilder(
+        animation: _backgroundController,
+        builder: (context, child) {
+          return Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [
+                  0.0,
+                  0.5 + (_backgroundController.value * 0.3),
+                  1.0,
+                ],
+                colors: [
+                  AppColors.primary,
+                  AppColors.primaryLight,
+                  AppColors.primary.withOpacity(0.9),
+                ],
+              ),
+            ),
+            child: SafeArea(
               child: Center(
-                child: AnimatedBuilder(
-                  animation: _animationController,
-                  builder: (context, child) {
-                    return FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: ScaleTransition(
-                        scale: _scaleAnimation,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            // App Logo
-                            Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Logo Container with Animation
+                    AnimatedBuilder(
+                      animation: _logoController,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: 0.5 + (_logoController.value * 0.5),
+                          child: Opacity(
+                            opacity: _logoController.value,
+                            child: Container(
                               width: 120,
                               height: 120,
                               decoration: BoxDecoration(
-                                color: AppColors.textInverse,
+                                color: AppColors.accent,
                                 borderRadius: BorderRadius.circular(24),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primaryDark.withValues(alpha: 0.3),
-                                    blurRadius: 20,
-                                    offset: const Offset(0, 10),
+                                    color: AppColors.accent.withOpacity(0.3),
+                                    blurRadius: 32,
+                                    offset: const Offset(0, 16),
                                   ),
                                 ],
                               ),
                               child: const Icon(
-                                Icons.balance,
-                                size: 60,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            
-                            // App Name
-                            Text(
-                              AppStrings.appName,
-                              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                Icons.gavel,
+                                size: 64,
                                 color: AppColors.textInverse,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: -0.5,
                               ),
                             ),
-                            const SizedBox(height: 8),
-                            
-                            // App Tagline
-                            Text(
-                              AppStrings.appTagline,
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: AppColors.textInverse.withValues(alpha: 0.9),
-                                fontWeight: FontWeight.w400,
-                              ),
-                              textAlign: TextAlign.center,
+                          ),
+                        );
+                      },
+                    ),
+                    
+                    const SizedBox(height: AppDimensions.spacing32),
+                    
+                    // App Name with Animation
+                    AnimatedBuilder(
+                      animation: _textController,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(0, 30 * (1 - _textController.value)),
+                          child: Opacity(
+                            opacity: _textController.value,
+                            child: Column(
+                              children: [
+                                Text(
+                                  'LawConnect',
+                                  style: AppTypography.heroTitle(
+                                    color: AppColors.textInverse,
+                                  ),
+                                ),
+                                
+                                const SizedBox(height: AppDimensions.spacing8),
+                                
+                                Text(
+                                  'GH',
+                                  style: AppTypography.sectionHeader(
+                                    color: AppColors.accent,
+                                  ),
+                                ),
+                                
+                                const SizedBox(height: AppDimensions.spacing16),
+                                
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: AppDimensions.spacing16,
+                                    vertical: AppDimensions.spacing8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.accent.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(
+                                      AppDimensions.chipBorderRadius,
+                                    ),
+                                    border: Border.all(
+                                      color: AppColors.accent.withOpacity(0.3),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Legal consultation made easy',
+                                    style: AppTypography.caption(
+                                      color: AppColors.textInverse,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                          ),
+                        );
+                      },
+                    ),
+                    
+                    const SizedBox(height: AppDimensions.spacing64),
+                    
+                    // Loading Indicator
+                    AnimatedBuilder(
+                      animation: _textController,
+                      builder: (context, child) {
+                        return Opacity(
+                          opacity: _textController.value * 0.7,
+                          child: SizedBox(
+                            width: 32,
+                            height: 32,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                AppColors.accent.withOpacity(0.8),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
-            
-            // Loading indicator
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          AppColors.textInverse.withValues(alpha: 0.8),
-                        ),
-                        strokeWidth: 3,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: Text(
-                      'Loading...',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textInverse.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            
-            // Ghana flag colors accent
-            FadeTransition(
-              opacity: _fadeAnimation,
-              child: Container(
-                height: 4,
-                margin: const EdgeInsets.symmetric(horizontal: 40),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.ghanaRed,
-                      AppColors.ghanaGold,
-                      AppColors.ghanaGreen,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 32),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
