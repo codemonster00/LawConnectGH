@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../shared/widgets/shimmer_loading.dart';
 
@@ -175,7 +173,7 @@ class _LawyerProfileScreenState extends ConsumerState<LawyerProfileScreen> {
             Text(
               _lawyer.lawFirm!,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.textInverse.withOpacity(0.9),
+                color: AppColors.textInverse.withValues(alpha: 0.9),
               ),
               textAlign: TextAlign.center,
             ),
@@ -186,8 +184,8 @@ class _LawyerProfileScreenState extends ConsumerState<LawyerProfileScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: _lawyer.isAvailable 
-                  ? AppColors.available.withOpacity(0.2)
-                  : AppColors.offline.withOpacity(0.2),
+                  ? AppColors.available.withValues(alpha: 0.2)
+                  : AppColors.offline.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -222,7 +220,7 @@ class _LawyerProfileScreenState extends ConsumerState<LawyerProfileScreen> {
       width: 100,
       height: 100,
       decoration: BoxDecoration(
-        color: AppColors.textInverse.withOpacity(0.2),
+        color: AppColors.textInverse.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(50),
       ),
       child: Icon(
@@ -242,7 +240,7 @@ class _LawyerProfileScreenState extends ConsumerState<LawyerProfileScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -366,7 +364,7 @@ class _LawyerProfileScreenState extends ConsumerState<LawyerProfileScreen> {
                 children: _lawyer.specialty.map((spec) {
                   return Chip(
                     label: Text(spec),
-                    backgroundColor: AppColors.primary.withOpacity(0.1),
+                    backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                     labelStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w500,
@@ -419,7 +417,7 @@ class _LawyerProfileScreenState extends ConsumerState<LawyerProfileScreen> {
                     ],
                   ),
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),
@@ -692,7 +690,7 @@ class _ReviewItem extends StatelessWidget {
               // Client avatar
               CircleAvatar(
                 radius: 16,
-                backgroundColor: AppColors.primary.withOpacity(0.1),
+                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                 child: Text(
                   Formatters.getInitials(clientName),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(

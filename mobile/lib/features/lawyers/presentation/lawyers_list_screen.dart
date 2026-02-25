@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
@@ -428,7 +427,7 @@ class _LawyerCard extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: AppColors.verified.withOpacity(0.1),
+                            color: AppColors.verified.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Row(
@@ -552,8 +551,8 @@ class _LawyerCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: lawyer.isAvailable 
-                          ? AppColors.available.withOpacity(0.1)
-                          : AppColors.offline.withOpacity(0.1),
+                          ? AppColors.available.withValues(alpha: 0.1)
+                          : AppColors.offline.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Row(
@@ -601,7 +600,7 @@ class _LawyerCard extends StatelessWidget {
       width: 56,
       height: 56,
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.1),
+        color: AppColors.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(28),
       ),
       child: Icon(

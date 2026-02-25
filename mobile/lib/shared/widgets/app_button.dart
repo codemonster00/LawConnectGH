@@ -201,7 +201,7 @@ class AppButton extends StatelessWidget {
         borderRadius: borderRadius ?? BorderRadius.circular(_getBorderRadius()),
       ),
       elevation: 2,
-      shadowColor: AppColors.primary.withOpacity(0.3),
+      shadowColor: AppColors.primary.withValues(alpha: 0.3),
       disabledBackgroundColor: AppColors.surfaceVariant,
       disabledForegroundColor: AppColors.textTertiary,
     );
@@ -216,7 +216,7 @@ class AppButton extends StatelessWidget {
         borderRadius: borderRadius ?? BorderRadius.circular(_getBorderRadius()),
       ),
       elevation: 0,
-      disabledBackgroundColor: AppColors.surfaceVariant.withOpacity(0.5),
+      disabledBackgroundColor: AppColors.surfaceVariant.withValues(alpha: 0.5),
       disabledForegroundColor: AppColors.textTertiary,
     );
   }

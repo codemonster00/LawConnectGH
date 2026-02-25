@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import '../../../app/router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/utils/formatters.dart';
@@ -103,7 +101,7 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen>
         bottom: TabBar(
           controller: _tabController,
           labelColor: AppColors.textInverse,
-          unselectedLabelColor: AppColors.textInverse.withOpacity(0.7),
+          unselectedLabelColor: AppColors.textInverse.withValues(alpha: 0.7),
           indicatorColor: AppColors.accent,
           tabs: const [
             Tab(text: 'Templates'),
@@ -227,7 +225,7 @@ class _DocumentsListScreenState extends ConsumerState<DocumentsListScreen>
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: AppColors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -323,7 +321,7 @@ class _TemplateCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: template.color.withOpacity(0.1),
+                  color: template.color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -368,7 +366,7 @@ class _TemplateCard extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: AppColors.accent.withOpacity(0.1),
+                            color: AppColors.accent.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -437,7 +435,7 @@ class _MyDocumentCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: _getStatusColor(document.status).withOpacity(0.1),
+                  color: _getStatusColor(document.status).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -465,7 +463,7 @@ class _MyDocumentCard extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: _getStatusColor(document.status).withOpacity(0.1),
+                            color: _getStatusColor(document.status).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -597,7 +595,7 @@ class _TemplateDetailsSheet extends StatelessWidget {
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                  color: template.color.withOpacity(0.1),
+                  color: template.color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
@@ -726,7 +724,7 @@ class _DocumentDetailsSheet extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: _getStatusColor().withOpacity(0.1),
+                  color: _getStatusColor().withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -750,7 +748,7 @@ class _DocumentDetailsSheet extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: _getStatusColor().withOpacity(0.1),
+                        color: _getStatusColor().withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -884,9 +882,9 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [

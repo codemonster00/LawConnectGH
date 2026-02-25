@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../shared/widgets/app_button.dart';
@@ -339,7 +338,7 @@ class _LawyerReviewsScreenState extends ConsumerState<LawyerReviewsScreen> {
           setState(() => _sortBy = value);
         }
       },
-      selectedColor: AppColors.primary.withOpacity(0.2),
+      selectedColor: AppColors.primary.withValues(alpha: 0.2),
       checkmarkColor: AppColors.primary,
     );
   }
@@ -362,7 +361,7 @@ class _ReviewCard extends StatelessWidget {
               // Avatar
               CircleAvatar(
                 radius: 20,
-                backgroundColor: AppColors.primary.withOpacity(0.1),
+                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                 child: Text(
                   review.clientName.substring(0, 1).toUpperCase(),
                   style: TextStyle(

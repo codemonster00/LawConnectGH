@@ -60,7 +60,7 @@ ColorScheme get lawConnectColorScheme => ColorScheme.fromSeed(
   primary: AppColors.primary,
   secondary: AppColors.accent,
   surface: AppColors.surface,
-  background: AppColors.background,
+  // background deprecated - using surface instead
   error: AppColors.error,
 );
 

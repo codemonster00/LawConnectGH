@@ -6,8 +6,6 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../shared/models/user.dart';
-import '../../../shared/widgets/shimmer_loading.dart';
-
 /// Screen showing list of user's consultations (active and history)
 class ConsultationsListScreen extends ConsumerStatefulWidget {
   const ConsultationsListScreen({super.key});
@@ -81,7 +79,7 @@ class _ConsultationsListScreenState extends ConsumerState<ConsultationsListScree
         bottom: TabBar(
           controller: _tabController,
           labelColor: AppColors.textInverse,
-          unselectedLabelColor: AppColors.textInverse.withOpacity(0.7),
+          unselectedLabelColor: AppColors.textInverse.withValues(alpha: 0.7),
           indicatorColor: AppColors.accent,
           tabs: [
             Tab(
@@ -161,7 +159,7 @@ class _ConsultationsListScreenState extends ConsumerState<ConsultationsListScree
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: AppColors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -279,7 +277,7 @@ class _ConsultationCard extends StatelessWidget {
                   // Lawyer avatar
                   CircleAvatar(
                     radius: 24,
-                    backgroundColor: AppColors.primary.withOpacity(0.1),
+                    backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                     child: Text(
                       Formatters.getInitials(consultation.lawyerName),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -311,7 +309,7 @@ class _ConsultationCard extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
-                                color: _getStatusColor(consultation.status).withOpacity(0.1),
+                                color: _getStatusColor(consultation.status).withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
@@ -385,7 +383,7 @@ class _ConsultationCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.05),
+                    color: AppColors.primary.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -524,7 +522,7 @@ class _ConsultationDetailsSheet extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 28,
-                backgroundColor: AppColors.primary.withOpacity(0.1),
+                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                 child: Text(
                   Formatters.getInitials(consultation.lawyerName),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -557,7 +555,7 @@ class _ConsultationDetailsSheet extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: _getStatusColor().withOpacity(0.1),
+                  color: _getStatusColor().withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(

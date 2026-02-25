@@ -18,9 +18,8 @@ import '../features/documents/presentation/document_templates_screen.dart';
 import '../features/profile/presentation/profile_screen.dart';
 import '../features/profile/presentation/edit_profile_screen.dart';
 import '../features/payments/presentation/payment_methods_screen.dart';
-import '../features/payments/presentation/momo_payment_screen.dart';
-import '../features/notifications/presentation/notifications_screen.dart';
-import '../features/knowledge_base/presentation/knowledge_base_screen.dart';
+import '../features/voice_recording/presentation/voice_recording_screen.dart';
+import '../features/settings/presentation/settings_screen.dart';
 import '../shared/widgets/main_navigation_shell.dart';
 
 /// Route paths
@@ -50,6 +49,8 @@ class AppRoutes {
   static const String momoPayment = '/payment/momo';
   static const String notifications = '/notifications';
   static const String knowledgeBase = '/knowledge-base';
+  static const String voiceRecording = '/voice-recording';
+  static const String settings = '/settings';
 }
 
 /// Router provider for the app
@@ -174,6 +175,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.paymentMethods,
         builder: (context, state) => const PaymentMethodsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.voiceRecording,
+        builder: (context, state) => const VoiceRecordingScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.settings,
+        builder: (context, state) => const SettingsScreen(),
       ),
     ],
     

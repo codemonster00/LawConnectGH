@@ -230,7 +230,7 @@ class _ConsultationChatScreenState extends ConsumerState<ConsultationChatScreen>
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             margin: const EdgeInsets.only(right: 8),
             decoration: BoxDecoration(
-              color: AppColors.accent.withOpacity(0.2),
+              color: AppColors.accent.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
@@ -340,7 +340,7 @@ class _ConsultationChatScreenState extends ConsumerState<ConsultationChatScreen>
   Widget _buildConsultationBanner() {
     return Container(
       padding: const EdgeInsets.all(16),
-      color: AppColors.accent.withOpacity(0.1),
+      color: AppColors.accent.withValues(alpha: 0.1),
       child: Row(
         children: [
           Icon(
@@ -376,7 +376,7 @@ class _ConsultationChatScreenState extends ConsumerState<ConsultationChatScreen>
         color: AppColors.surface,
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),
@@ -503,7 +503,7 @@ class _ChatBubble extends StatelessWidget {
                   : null,
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primary.withOpacity(0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -579,7 +579,7 @@ class _ConsultationInfo extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: _getStatusColor(consultation.status).withOpacity(0.1),
+                  color: _getStatusColor(consultation.status).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -708,7 +708,7 @@ class _ActionButton extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Material(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(24),
           child: InkWell(
             borderRadius: BorderRadius.circular(24),

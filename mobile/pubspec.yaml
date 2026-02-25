@@ -77,6 +77,21 @@ dependencies:
   icons_plus: ^5.0.0
   cupertino_icons: ^1.0.8
   
+  # Voice Recording & Audio
+  record: ^5.1.2
+  just_audio: ^0.9.40
+  audio_waveforms: ^1.1.0
+  
+  # Enhanced UI & Animations
+  flutter_animate: ^4.5.0
+  skeletonizer: ^1.4.2
+  
+  # Dynamic Color & Theme
+  dynamic_color: 1.7.0
+  
+  # File handling for recordings
+  path: ^1.9.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

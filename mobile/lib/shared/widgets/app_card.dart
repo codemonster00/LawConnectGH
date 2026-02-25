@@ -138,8 +138,8 @@ class AppCard extends StatelessWidget {
           onTap: onTap,
           onLongPress: onLongPress,
           borderRadius: effectiveBorderRadius,
-          splashColor: AppColors.primary.withOpacity(0.1),
-          highlightColor: AppColors.primary.withOpacity(0.05),
+          splashColor: AppColors.primary.withValues(alpha: 0.1),
+          highlightColor: AppColors.primary.withValues(alpha: 0.05),
           child: card,
         ),
       );
@@ -158,8 +158,8 @@ class AppCard extends StatelessWidget {
             onTap: onTap,
             onLongPress: onLongPress,
             borderRadius: effectiveBorderRadius,
-            splashColor: AppColors.primary.withOpacity(0.1),
-            highlightColor: AppColors.primary.withOpacity(0.05),
+            splashColor: AppColors.primary.withValues(alpha: 0.1),
+            highlightColor: AppColors.primary.withValues(alpha: 0.05),
             child: Container(
               margin: margin,
               padding: effectivePadding,
@@ -278,7 +278,7 @@ class AppInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCard(
-      backgroundColor: backgroundColor?.withOpacity(0.1) ?? AppColors.surfaceVariant,
+      backgroundColor: backgroundColor?.withValues(alpha: 0.1) ?? AppColors.surfaceVariant,
       borderColor: borderColor ?? backgroundColor,
       borderWidth: 1,
       padding: padding ?? const EdgeInsets.all(16),

@@ -77,8 +77,8 @@ class ConsultationStatusBadge extends StatelessWidget {
         return _StatusConfig(
           label: 'Pending',
           icon: Icons.schedule,
-          backgroundColor: AppColors.warning.withOpacity(0.1),
-          borderColor: AppColors.warning.withOpacity(0.3),
+          backgroundColor: AppColors.warning.withValues(alpha: 0.1),
+          borderColor: AppColors.warning.withValues(alpha: 0.3),
           textColor: AppColors.warning,
           iconColor: AppColors.warning,
         );
@@ -87,8 +87,8 @@ class ConsultationStatusBadge extends StatelessWidget {
         return _StatusConfig(
           label: 'Accepted',
           icon: Icons.check_circle_outline,
-          backgroundColor: AppColors.info.withOpacity(0.1),
-          borderColor: AppColors.info.withOpacity(0.3),
+          backgroundColor: AppColors.info.withValues(alpha: 0.1),
+          borderColor: AppColors.info.withValues(alpha: 0.3),
           textColor: AppColors.info,
           iconColor: AppColors.info,
         );
@@ -97,8 +97,8 @@ class ConsultationStatusBadge extends StatelessWidget {
         return _StatusConfig(
           label: 'In Progress',
           icon: Icons.chat_bubble_outline,
-          backgroundColor: AppColors.primary.withOpacity(0.1),
-          borderColor: AppColors.primary.withOpacity(0.3),
+          backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+          borderColor: AppColors.primary.withValues(alpha: 0.3),
           textColor: AppColors.primary,
           iconColor: AppColors.primary,
         );
@@ -107,8 +107,8 @@ class ConsultationStatusBadge extends StatelessWidget {
         return _StatusConfig(
           label: 'Completed',
           icon: Icons.check_circle,
-          backgroundColor: AppColors.success.withOpacity(0.1),
-          borderColor: AppColors.success.withOpacity(0.3),
+          backgroundColor: AppColors.success.withValues(alpha: 0.1),
+          borderColor: AppColors.success.withValues(alpha: 0.3),
           textColor: AppColors.success,
           iconColor: AppColors.success,
         );
@@ -117,8 +117,8 @@ class ConsultationStatusBadge extends StatelessWidget {
         return _StatusConfig(
           label: 'Cancelled',
           icon: Icons.cancel_outlined,
-          backgroundColor: AppColors.error.withOpacity(0.1),
-          borderColor: AppColors.error.withOpacity(0.3),
+          backgroundColor: AppColors.error.withValues(alpha: 0.1),
+          borderColor: AppColors.error.withValues(alpha: 0.3),
           textColor: AppColors.error,
           iconColor: AppColors.error,
         );
@@ -127,8 +127,8 @@ class ConsultationStatusBadge extends StatelessWidget {
         return _StatusConfig(
           label: 'Declined',
           icon: Icons.close_outlined,
-          backgroundColor: AppColors.error.withOpacity(0.1),
-          borderColor: AppColors.error.withOpacity(0.3),
+          backgroundColor: AppColors.error.withValues(alpha: 0.1),
+          borderColor: AppColors.error.withValues(alpha: 0.3),
           textColor: AppColors.error,
           iconColor: AppColors.error,
         );
@@ -137,8 +137,8 @@ class ConsultationStatusBadge extends StatelessWidget {
         return _StatusConfig(
           label: 'Rescheduled',
           icon: Icons.update,
-          backgroundColor: AppColors.accent.withOpacity(0.1),
-          borderColor: AppColors.accent.withOpacity(0.3),
+          backgroundColor: AppColors.accent.withValues(alpha: 0.1),
+          borderColor: AppColors.accent.withValues(alpha: 0.3),
           textColor: AppColors.accent,
           iconColor: AppColors.accent,
         );
@@ -147,8 +147,8 @@ class ConsultationStatusBadge extends StatelessWidget {
         return _StatusConfig(
           label: 'Paid',
           icon: Icons.payment,
-          backgroundColor: AppColors.success.withOpacity(0.1),
-          borderColor: AppColors.success.withOpacity(0.3),
+          backgroundColor: AppColors.success.withValues(alpha: 0.1),
+          borderColor: AppColors.success.withValues(alpha: 0.3),
           textColor: AppColors.success,
           iconColor: AppColors.success,
         );
@@ -157,8 +157,8 @@ class ConsultationStatusBadge extends StatelessWidget {
         return _StatusConfig(
           label: 'Payment Due',
           icon: Icons.payments_outlined,
-          backgroundColor: AppColors.warning.withOpacity(0.1),
-          borderColor: AppColors.warning.withOpacity(0.3),
+          backgroundColor: AppColors.warning.withValues(alpha: 0.1),
+          borderColor: AppColors.warning.withValues(alpha: 0.3),
           textColor: AppColors.warning,
           iconColor: AppColors.warning,
         );
@@ -167,8 +167,8 @@ class ConsultationStatusBadge extends StatelessWidget {
         return _StatusConfig(
           label: 'Refunded',
           icon: Icons.money_off,
-          backgroundColor: AppColors.info.withOpacity(0.1),
-          borderColor: AppColors.info.withOpacity(0.3),
+          backgroundColor: AppColors.info.withValues(alpha: 0.1),
+          borderColor: AppColors.info.withValues(alpha: 0.3),
           textColor: AppColors.info,
           iconColor: AppColors.info,
         );
@@ -249,7 +249,7 @@ class MultiStatusBadge extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: AppColors.textTertiary.withOpacity(0.1),
+              color: AppColors.textTertiary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(

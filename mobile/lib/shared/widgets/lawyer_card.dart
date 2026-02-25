@@ -97,7 +97,6 @@ class LawyerCard extends StatelessWidget {
       case LawyerCardVariant.featured:
         return _buildFeaturedCard(context);
       case LawyerCardVariant.standard:
-      default:
         return _buildStandardCard(context);
     }
   }
@@ -420,7 +419,7 @@ class LawyerCard extends StatelessWidget {
         height: size + 8,
         decoration: filled
             ? BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
                 shape: BoxShape.circle,
               )
             : null,
@@ -441,9 +440,9 @@ class LawyerCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -496,9 +495,9 @@ class LawyerCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: AppColors.accent.withOpacity(0.1),
+        color: AppColors.accent.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: AppColors.accent.withOpacity(0.3)),
+        border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
       ),
       child: Text(
         text,

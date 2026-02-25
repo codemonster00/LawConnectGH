@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/app_text_field.dart';
 import '../../../shared/widgets/empty_state.dart';
@@ -345,7 +344,7 @@ class _CategoryCard extends StatelessWidget {
     return AppCard.clickable(
       onTap: onTap,
       backgroundColor: isSelected 
-          ? category.color.withOpacity(0.1) 
+          ? category.color.withValues(alpha: 0.1) 
           : AppColors.surface,
       borderColor: isSelected 
           ? category.color 
@@ -357,7 +356,7 @@ class _CategoryCard extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: category.color.withOpacity(0.1),
+              color: category.color.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -423,7 +422,7 @@ class _ArticleCard extends StatelessWidget {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.accent.withOpacity(0.1),
+                              color: AppColors.accent.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(

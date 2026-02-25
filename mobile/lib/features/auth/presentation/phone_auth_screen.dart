@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:country_picker/country_picker.dart';
 import '../../../app/router.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/constants/app_colors.dart';
 

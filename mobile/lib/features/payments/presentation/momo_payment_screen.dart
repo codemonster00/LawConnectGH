@@ -131,13 +131,12 @@ class _MoMoPaymentScreenState extends ConsumerState<MoMoPaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (_currentStep != PaymentStep.selectProvider) {
+    return PopScope(
+      canPop: _currentStep == PaymentStep.selectProvider,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (!didPop && _currentStep != PaymentStep.selectProvider) {
           _goBack();
-          return false;
         }
-        return true;
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -174,9 +173,9 @@ class _MoMoPaymentScreenState extends ConsumerState<MoMoPaymentScreen> {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.1),
+        color: AppColors.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -293,7 +292,7 @@ class _MoMoPaymentScreenState extends ConsumerState<MoMoPaymentScreen> {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: _selectedProvider!.color.withOpacity(0.1),
+                      color: _selectedProvider!.color.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -349,9 +348,9 @@ class _MoMoPaymentScreenState extends ConsumerState<MoMoPaymentScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.info.withOpacity(0.1),
+                color: AppColors.info.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.info.withOpacity(0.3)),
+                border: Border.all(color: AppColors.info.withValues(alpha: 0.3)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -434,7 +433,7 @@ class _MoMoPaymentScreenState extends ConsumerState<MoMoPaymentScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.warning.withOpacity(0.1),
+                color: AppColors.warning.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -472,7 +471,7 @@ class _MoMoPaymentScreenState extends ConsumerState<MoMoPaymentScreen> {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppColors.success.withOpacity(0.1),
+                color: AppColors.success.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -529,7 +528,7 @@ class _MoMoPaymentScreenState extends ConsumerState<MoMoPaymentScreen> {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: AppColors.error.withOpacity(0.1),
+                color: AppColors.error.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -598,7 +597,7 @@ class _ProviderCard extends StatelessWidget {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: provider.color.withOpacity(0.1),
+              color: provider.color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(

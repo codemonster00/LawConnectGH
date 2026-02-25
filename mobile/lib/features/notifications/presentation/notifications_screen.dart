@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_strings.dart';
 import '../../../core/utils/formatters.dart';
-import '../../../shared/widgets/shimmer_loading.dart';
-
 /// Notifications screen showing consultation reminders, lawyer responses, system alerts
 class NotificationsScreen extends ConsumerStatefulWidget {
   const NotificationsScreen({super.key});
@@ -260,7 +257,7 @@ class _NotificationCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         color: notification.isRead 
             ? AppColors.surface 
-            : AppColors.primary.withOpacity(0.05),
+            : AppColors.primary.withValues(alpha: 0.05),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -269,7 +266,7 @@ class _NotificationCard extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: _getNotificationColor().withOpacity(0.1),
+                color: _getNotificationColor().withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(

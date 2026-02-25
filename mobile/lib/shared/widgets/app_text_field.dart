@@ -68,7 +68,7 @@ class AppTextField extends StatefulWidget {
   });
 
   /// Email input constructor
-  AppTextField.email({
+  const AppTextField.email({
     super.key,
     this.label = 'Email',
     this.hint = 'Enter your email',
@@ -101,7 +101,7 @@ class AppTextField extends StatefulWidget {
         textAlign = TextAlign.start;
 
   /// Password input constructor
-  AppTextField.password({
+  const AppTextField.password({
     super.key,
     this.label = 'Password',
     this.hint = 'Enter your password',
@@ -167,7 +167,7 @@ class AppTextField extends StatefulWidget {
         textAlign = TextAlign.start;
 
   /// Search input constructor
-  AppTextField.search({
+  const AppTextField.search({
     super.key,
     this.label,
     this.hint = 'Search...',
@@ -200,7 +200,7 @@ class AppTextField extends StatefulWidget {
         textAlign = TextAlign.start;
 
   /// Multiline text area constructor
-  AppTextField.multiline({
+  const AppTextField.multiline({
     super.key,
     this.label,
     this.hint,

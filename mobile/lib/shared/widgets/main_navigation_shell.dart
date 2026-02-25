@@ -4,7 +4,7 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../app/router.dart';
 
-/// Main navigation shell with bottom navigation bar
+/// Main navigation shell with bottom navigation bar and FAB
 class MainNavigationShell extends StatelessWidget {
   final Widget child;
   
@@ -15,71 +15,87 @@ class MainNavigationShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentLocation = GoRouterState.of(context).uri.toString();
+    final showFAB = _shouldShowFAB(currentLocation);
+    
     return Scaffold(
       body: child,
       bottomNavigationBar: _BottomNavigationBar(),
+      floatingActionButton: showFAB ? _buildFloatingActionButton(context) : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+  
+  bool _shouldShowFAB(String location) {
+    // Show FAB on main tabs, hide on detail screens
+    return location == AppRoutes.home || 
+           location == AppRoutes.lawyers ||
+           location == AppRoutes.consultations;
+  }
+  
+  Widget _buildFloatingActionButton(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return FloatingActionButton.large(
+      onPressed: () => context.go(AppRoutes.voiceRecording),
+      tooltip: 'Voice Recording',
+      elevation: 8,
+      child: Icon(
+        Icons.mic_rounded,
+        size: 32,
+        color: theme.colorScheme.onPrimaryContainer,
+      ),
     );
   }
 }
 
-/// Custom bottom navigation bar with 5 tabs
+/// Material Design 3 NavigationBar with 5 tabs
 class _BottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentLocation = GoRouterState.of(context).uri.toString();
+    final theme = Theme.of(context);
     
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
+      decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary,
-            offset: Offset(0, -1),
+            color: theme.colorScheme.shadow.withValues(alpha: 0.1),
+            offset: const Offset(0, -2),
             blurRadius: 8,
             spreadRadius: 0,
           ),
         ],
       ),
-      child: BottomNavigationBar(
-        currentIndex: _getCurrentIndex(currentLocation),
-        onTap: (index) => _onTabTapped(context, index),
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColors.surface,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: AppColors.textSecondary,
-        selectedLabelStyle: const TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 12,
-        ),
-        unselectedLabelStyle: const TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 12,
-        ),
-        elevation: 0,
-        items: const [
-          BottomNavigationBarItem(
+      child: NavigationBar(
+        selectedIndex: _getCurrentIndex(currentLocation),
+        onDestinationSelected: (index) => _onTabTapped(context, index),
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        animationDuration: const Duration(milliseconds: 300),
+        destinations: const [
+          NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+            selectedIcon: Icon(Icons.home_rounded),
             label: AppStrings.home,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people_outline),
-            activeIcon: Icon(Icons.people),
+          NavigationDestination(
+            icon: Icon(Icons.people_outline_rounded),
+            selectedIcon: Icon(Icons.people_rounded),
             label: AppStrings.lawyers,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            activeIcon: Icon(Icons.chat_bubble),
+          NavigationDestination(
+            icon: Icon(Icons.chat_bubble_outline_rounded),
+            selectedIcon: Icon(Icons.chat_bubble_rounded),
             label: AppStrings.consultations,
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.description_outlined),
-            activeIcon: Icon(Icons.description),
+            selectedIcon: Icon(Icons.description_rounded),
             label: AppStrings.documents,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline_rounded),
+            selectedIcon: Icon(Icons.person_rounded),
             label: AppStrings.profile,
           ),
         ],

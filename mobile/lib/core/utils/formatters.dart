@@ -90,6 +90,40 @@ class Formatters {
     }
   }
   
+  /// Format Duration object to readable format (e.g., "1:23:45" or "2:34")
+  static String formatDurationFromDuration(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
+    
+    if (hours > 0) {
+      return '${hours.toString().padLeft(1, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    } else {
+      return '${minutes.toString().padLeft(1, '0')}:${seconds.toString().padLeft(2, '0')}';
+    }
+  }
+  
+  /// Format relative date (e.g., "2 days ago", "Today")
+  static String formatRelativeDate(DateTime date) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final dateOnly = DateTime(date.year, date.month, date.day);
+    final difference = today.difference(dateOnly).inDays;
+    
+    if (difference == 0) {
+      return 'Today';
+    } else if (difference == 1) {
+      return 'Yesterday';
+    } else if (difference < 7) {
+      return '$difference days ago';
+    } else if (difference < 30) {
+      final weeks = (difference / 7).floor();
+      return weeks == 1 ? '1 week ago' : '$weeks weeks ago';
+    } else {
+      return DateFormat('MMM d, yyyy').format(date);
+    }
+  }
+  
   /// Format lawyer experience years
   static String formatExperience(int yearCalledToBar) {
     final currentYear = DateTime.now().year;
@@ -195,9 +229,14 @@ class PhoneNumberFormatter {
       // Local format
       final buffer = StringBuffer();
       for (int i = 0; i < digitsOnly.length; i++) {
-        if (i == 0) buffer.write('0');
-        else if (i == 3 || i == 6) buffer.write(' ');
-        if (i > 0) buffer.write(digitsOnly[i]);
+        if (i == 0) {
+          buffer.write('0');
+        } else if (i == 3 || i == 6) {
+          buffer.write(' ');
+        }
+        if (i > 0) {
+          buffer.write(digitsOnly[i]);
+        }
       }
       return buffer.toString();
     } else if (digitsOnly.startsWith('233') && digitsOnly.length <= 12) {

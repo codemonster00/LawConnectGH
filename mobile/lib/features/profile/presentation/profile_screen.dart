@@ -98,7 +98,7 @@ class ProfileScreen extends ConsumerWidget {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: AppColors.textInverse.withOpacity(0.2),
+                      color: AppColors.textInverse.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: Icon(
@@ -124,7 +124,7 @@ class ProfileScreen extends ConsumerWidget {
           Text(
             '${user.city}, ${user.region}',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textInverse.withOpacity(0.8),
+              color: AppColors.textInverse.withValues(alpha: 0.8),
             ),
           ),
           const SizedBox(height: 8),
@@ -133,7 +133,7 @@ class ProfileScreen extends ConsumerWidget {
           Text(
             'Member since ${Formatters.formatDate(user.memberSince)}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textInverse.withOpacity(0.7),
+              color: AppColors.textInverse.withValues(alpha: 0.7),
             ),
           ),
         ],
@@ -267,7 +267,7 @@ class ProfileScreen extends ConsumerWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -411,7 +411,7 @@ class _StatCard extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
@@ -458,7 +458,7 @@ class _MenuTile extends StatelessWidget {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(

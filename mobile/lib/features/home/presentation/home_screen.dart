@@ -148,7 +148,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -212,12 +212,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         },
       ),
       QuickAction(
-        icon: Icons.support_agent_outlined,
-        label: 'Emergency',
-        color: AppColors.error,
-        onPressed: () {
-          // TODO: Emergency legal help
-        },
+        icon: Icons.mic_rounded,
+        label: 'Voice Recording',
+        color: AppColors.info,
+        onPressed: () => context.go('/voice-recording'),
       ),
     ];
 
@@ -312,9 +310,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           )
-        else
-          // TODO: Show actual recent consultations
-          const SizedBox.shrink(),
+        // else - dead code removed
       ],
     );
   }
@@ -440,7 +436,7 @@ class _QuickActionButton extends StatelessWidget {
       label: Text(label),
       style: OutlinedButton.styleFrom(
         foregroundColor: AppColors.textInverse,
-        side: BorderSide(color: AppColors.textInverse.withOpacity(0.3)),
+        side: BorderSide(color: AppColors.textInverse.withValues(alpha: 0.3)),
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       ),
     );
@@ -466,7 +462,7 @@ class _QuickActionCard extends StatelessWidget {
           border: Border.all(color: AppColors.border),
           boxShadow: [
             BoxShadow(
-              color: action.color.withOpacity(0.1),
+              color: action.color.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -479,7 +475,7 @@ class _QuickActionCard extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: action.color.withOpacity(0.1),
+                color: action.color.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -536,7 +532,7 @@ class _FeaturedLawyerCard extends StatelessWidget {
           border: Border.all(color: AppColors.border),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
